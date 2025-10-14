@@ -14,7 +14,7 @@ class KeyboardShortcutManager: ObservableObject {
     private let userDefaults = UserDefaults.standard
     private let shortcutsKey = "keyboard.shortcuts"
     private let shortcutsVersionKey = "keyboard.shortcuts.version"
-    private let currentVersion = 3 // Increment when adding new shortcuts
+    private let currentVersion = 4 // Increment when adding new shortcuts
 
 
     var shortcuts: [KeyboardShortcut] = []
@@ -208,6 +208,9 @@ class KeyboardShortcutManager: ObservableObject {
                 browserManager.selectNextSpaceInActiveWindow()
             case .previousSpace:
                 browserManager.selectPreviousSpaceInActiveWindow()
+            case .goToSpace1, .goToSpace2, .goToSpace3, .goToSpace4, .goToSpace5, .goToSpace6, .goToSpace7, .goToSpace8:
+                let tabIndex = Int(action.rawValue.components(separatedBy: "_").last ?? "0") ?? 1
+                browserManager.selectSpaceByIndexInActiveWindow(tabIndex - 1)
 
             // Window Management
             case .newWindow:
@@ -232,8 +235,6 @@ class KeyboardShortcutManager: ObservableObject {
                 browserManager.copyCurrentURL()
             case .expandAllFolders:
                 browserManager.expandAllFoldersInSidebar()
-            case .toggleTopBarAddressView:
-                browserManager.toggleTopBarAddressView()
             }
 
             NotificationCenter.default.post(

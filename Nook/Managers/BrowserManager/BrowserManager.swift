@@ -334,7 +334,6 @@ class BrowserManager: ObservableObject {
     @Published var tabClosureToastCount: Int = 0
     @Published var updateAvailability: UpdateAvailability?
 
-
     // MARK: - Window State Management
     /// Registry of all active window states
     var windowStates: [UUID: BrowserWindowState] = [:]
@@ -2487,6 +2486,15 @@ class BrowserManager: ObservableObject {
         if let nextSpace = tabManager.spaces[safe: nextIndex] {
             setActiveSpace(nextSpace, in: activeWindow)
         }
+    }
+
+    /// Select space by index in the active window
+    func selectSpaceByIndexInActiveWindow(_ index: Int) {
+        guard let activeWindow = activeWindowState else { return }
+        guard tabManager.spaces.indices.contains(index) else { return }
+
+        let space = tabManager.spaces[index]
+        setActiveSpace(space, in: activeWindow)
     }
 
     /// Select the previous space in the active window
